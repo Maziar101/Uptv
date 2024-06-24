@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
 
-const CategorySchema = mongoose.Schema({
+const CategorySchema = new mongoose.Schema({
     englishName: {
         type: String,
         unique: [true, 'Category already exists'],
@@ -23,7 +23,7 @@ const CategorySchema = mongoose.Schema({
     },
 }, { timeStamps: true });
 
-CategorySchema.pre('save', (next) => {
+CategorySchema.pre('save', function(next){
     if (this.slug) {
         next();
     } else {

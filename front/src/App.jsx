@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import Home from './Pages/Home';
+import { ThemeProvider, createTheme } from '@mui/material';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import AdminPanel from './Pages/AdminPanel';
+import Contents from './Pages/Videos';
+import UpdateCategory from './Components/Category/updateCategory';
+import DeleteCategory from './Components/Category/deleteCategory';
+import AdminHome from './Components/Home/adminHome';
+import ShowCategory from './Components/Category/showCategory';
+import DeleteSeries from './Components/Series/deleteSeries';
+import ShowSeries from './Components/Series/showSeries';
+import UpdateSeries from './Components/Series/updateSeries';
+import UpdateFilm from './Components/Film/updateFilm';
+import DeleteFilm from './Components/Film/deleteFilm';
+import ShowFilm from './Components/Film/showFilm';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const theme = createTheme({
+    direction: "rtl",
+  });
+
+  const location = useLocation();
+  const isAdminPanel = location.pathname.startsWith('/admin-panel');
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      {!isAdminPanel && <Header />}
+      <Routes>
+        <Route exact path='/' element={<Home />} />
+        <Route path='/contents/:id/:name' element={<Contents />} />
+        <Route path='/admin-panel' element={<AdminPanel />}>
+          <Route index element={<AdminHome/>} />
+          <Route path="/admin-panel/category/show" element={<ShowCategory />} />
+          <Route path="/admin-panel/category/update" element={<UpdateCategory />} />
+          <Route path="/admin-panel/category/delete" element={<DeleteCategory />} />
+          <Route path="/admin-panel/film/show" element={<ShowFilm />} />
+          <Route path="/admin-panel/film/update" element={<UpdateFilm />} />
+          <Route path="/admin-panel/film/delete" element={<DeleteFilm />} />
+          <Route path="/admin-panel/series/show" element={<ShowSeries />} />
+          <Route path="/admin-panel/series/update" element={<UpdateSeries />} />
+          <Route path="/admin-panel/series/delete" element={<DeleteSeries />} />
+        </Route>
+      </Routes>
+      {!isAdminPanel && <Footer />}
+    </ThemeProvider>
+  );
 }
-
-export default App
