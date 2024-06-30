@@ -46,6 +46,12 @@ body {
   box-sizing: border-box;
   background-color: #1C1C22;
   list-style: none !important;
+  color: #fff;
   text-decoration: none !important;
   font-family: "Iran" !important;
+}
+*{
+  font-family: "Iran" !important;
+  text-decoration: none !important;
+
 }

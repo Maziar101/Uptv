@@ -2,9 +2,13 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 
 const filmSchema = new mongoose.Schema({
-    imagePath: {
+    posterX: {
         type: String,
-        required: [true, 'Please Provide an Image For Film'],
+        required: [true, 'Please Provide an PosterX For Film'],
+    },
+    posterY:{
+        type: String,
+        required: [true, 'Please Provide an PosterY For Film'],
     },
     filmPath: {
         type: String,

@@ -13,7 +13,8 @@ const CategorySchema = new mongoose.Schema({
         required: [true, 'Category field can not be empty'],
     },
     submenu: {
-        type: Array,
+        type: [mongoose.Types.ObjectId],
+        ref:'Category',
         unique: true,
     },
     slug: {

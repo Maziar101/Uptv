@@ -1,6 +1,6 @@
-import Category from "../models/Category";
-import ApiFeatures from "../utils/apiFeatures";
-import catchAsync from "../utils/catchAsync";
+import Category from "../models/Category.js";
+import ApiFeatures from "../utils/apiFeatures.js";
+import catchAsync from "../utils/catchAsync.js";
 
 export const getAllCategory = catchAsync(async(req,res,next)=>{
     const features = new ApiFeatures(Category,req.query).filters().limitFields().paginate().sort();
