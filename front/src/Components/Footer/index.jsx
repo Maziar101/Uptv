@@ -3,7 +3,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import WestIcon from "@mui/icons-material/West";
 import React, { useEffect, useState } from "react";
@@ -33,8 +33,18 @@ export default function Footer() {
   // ));
   return (
     <>
-      <Stack component={"footer"} sx={{ padding: "15px 15px 15px 0" , width: "70%" , position:"absolute" , bottom: "0" , transform: "translateX(-50%)" , left: "50%"}}>
-        <Stack sx={{gap:"20px"}}>
+      <Stack
+        component={"footer"}
+        sx={{
+          padding: "15px 15px 15px 0",
+          width: "70%",
+          position: "fixed",
+          bottom: "0",
+          transform: "translateX(-50%)",
+          left: "50%",
+        }}
+      >
+        <Stack sx={{ gap: "20px" }}>
           {/* Footer Part One */}
           <Stack sx={{ flexDirection: "row" }}>
             <Stack
@@ -181,7 +191,14 @@ export default function Footer() {
                     boxShadow: "0 0 5px #FA6F7A",
                   }}
                 >
-                  <Stack sx={{ width: "90%", margin: "auto", flexDirection: "row", justifyContent: "space-between" }}>
+                  <Stack
+                    sx={{
+                      width: "90%",
+                      margin: "auto",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Stack sx={{ flexDirection: "row", gap: "10px" }}>
                       <InstagramIcon style={{ fontSize: "25px" }} />
                       <Typography>صفحه اینستاگرام</Typography>
@@ -203,7 +220,14 @@ export default function Footer() {
                     boxShadow: "0 0 5px #75C5EE",
                   }}
                 >
-                  <Stack sx={{ width: "90%", margin: "auto", flexDirection: "row", justifyContent: "space-between" }}>
+                  <Stack
+                    sx={{
+                      width: "90%",
+                      margin: "auto",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Stack sx={{ flexDirection: "row", gap: "10px" }}>
                       <TelegramIcon style={{ fontSize: "25px" }} />
                       <Typography>کانال تلگرام</Typography>
@@ -218,7 +242,7 @@ export default function Footer() {
           </Stack>
           {/* Footer Part Two */}
 
-          <Stack sx={{ padding: "20px 15px 20px 0px", }}>
+          <Stack sx={{ padding: "20px 15px 20px 0px" }}>
             <Stack sx={{ flexDirection: "row" }}>
               {/* Logo */}
               <Logo />
@@ -257,7 +281,10 @@ export default function Footer() {
           {/* Footer Part Three */}
 
           <Stack sx={{ borderTop: "1px solid #979288", paddingTop: "20px" }}>
-            <Typography sx={{ color: "#979288" }}>استفاده از محتوا و لینک های دانلود آپ تی وی، مجاز نمی باشد. تمامی حقوق این سایت به نام آپ تی وی محفوظ است.</Typography>
+            <Typography sx={{ color: "#979288" }}>
+              استفاده از محتوا و لینک های دانلود آپ تی وی، مجاز نمی باشد. تمامی
+              حقوق این سایت به نام آپ تی وی محفوظ است.
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

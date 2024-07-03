@@ -11,6 +11,7 @@ const TokenSlice = createSlice({
     reducers: {
         logout: (state) => {
             state.token = null;
+            state.user = null;
         },
         login: (state, action) => {
             state.token = action.payload.token;

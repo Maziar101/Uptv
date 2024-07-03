@@ -4,11 +4,14 @@ import { List, ListItemButton, ListItemText, Collapse, Box, Stack, createTheme, 
 import AdminHeader from '../../Components/AdminHeader';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/Slices/TokenSlice';
 
 export default function AdminPanel() {
   const [openCategory, setOpenCategory] = useState(false);
   const [openFilm, setOpenFilm] = useState(false);
   const [openSeries, setOpenSeries] = useState(false);
+  const Dispatch = useDispatch();
 
   const handleMenuClick = (menu) => {
     setOpenCategory(menu === 'category' ? !openCategory : false);
@@ -94,6 +97,9 @@ export default function AdminPanel() {
                 </ListItemButton>
               </List>
             </Collapse>
+            <ListItemButton component={Link}>
+              <ListItemText primary="خروج از اکانت" onClick={()=>Dispatch(logout)} sx={{ textAlign: 'right', color: '#F88E8A' }} />
+            </ListItemButton>
           </List>
         </Box>
         <Stack sx={{ width: "70%", padding: "20px", color: "white", marginLeft: '20px' }}>

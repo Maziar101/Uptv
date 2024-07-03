@@ -18,6 +18,7 @@ import Footer from './Components/Footer';
 import AddCategory from './Components/Category/addCategory';
 import AddFilm from './Components/Film/addFilm';
 import AddSeries from './Components/Series/addSeries';
+import LoginRegister from './Pages/LoginRegister';
 
 export default function App() {
   const theme = createTheme({
@@ -33,6 +34,7 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/contents/:id/:name' element={<Contents />} />
+          <Route path='/login-register' element={<LoginRegister />} />
           <Route path='/admin-panel' element={<AdminPanel />}>
             <Route index element={<AdminHome />} />
             <Route path="/admin-panel/category/show" element={<ShowCategory />} />
