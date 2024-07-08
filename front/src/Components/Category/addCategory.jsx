@@ -1,172 +1,115 @@
 import { Stack, TextField, Button, Autocomplete, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Toast from '../Toast';
 
 export default function AddCategory() {
-  const [englishName, setEnglishName] = useState('');
   const [name, setName] = useState('');
+  const [englishName, setEnglishName] = useState('');
   const [submenu, setSubmenu] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [toast, setToast] = useState({ type: 'info', message: 'nothing...' });
   const { token } = useSelector((state) => state.token);
-  const [error, setError] = useState({ englishName: false, name: false });
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const fetchCategories = async () => {
       try {
-        const res = await fetch(process.env.REACT_APP_BASE_API + '/category');
+        const res = await fetch(`${process.env.REACT_APP_BASE_API}/category`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const data = await res.json();
-        console.log(data); // اضافه کردن کنسول لاگ
-        setCategories(data?.data || []);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+        setCategories(data?.data?.categories || []);
+        setToast({ type: 'success', message: data?.message });
+      } catch (err) {
+        setToast({ type: 'error', message: err?.message });
       }
-    })();
-  }, []);
+    };
 
-  const handleFetch = async () => {
-    if (!englishName || !name) {
-      setError({ englishName: !englishName, name: !name });
-      return;
-    }
+    fetchCategories();
+  }, [token, refresh]);
 
-    try {
-      const res = await fetch(process.env.REACT_APP_BASE_API + '/category', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          englishName,
-          name,
-          submenu
-        })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        // عملیات موفق بود
-        console.log('Category added successfully:', data);
-      } else {
-        // خطا در عملیات
-        console.error('Error adding category:', data);
+  const handleAdd = async () => {
+    if (name && englishName) {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_BASE_API}/category`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name,
+            englishName,
+            submenu: submenu
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setToast({ type: 'success', message: 'دسته بندی با موفقیت اضافه شد :)' });
+          setRefresh(!refresh);
+        } else {
+          setToast({ type: 'error', message: data?.message });
+        }
+      } catch (err) {
+        setToast({ type: 'error', message: err.message });
       }
-    } catch (error) {
-      console.error('Error in handleFetch:', error);
+    } else {
+      setToast({ type: 'error', message: 'حداقل باید نام فارسی و انگلیسی رو وارد کنی !' });
     }
   };
 
   return (
-    <Stack spacing={2}>
-      <TextField
-        required
-        placeholder="نام انگلیسی"
-        variant="outlined"
-        value={englishName}
-        onChange={(e) => setEnglishName(e.target.value)}
-        fullWidth
-        error={error.englishName}
-        helperText={error.englishName ? 'این فیلد ضروری است' : ''}
-        InputProps={{
-          style: { textAlign: 'right', color: 'white' },
-          dir: 'rtl',
-        }}
-        sx={{
-          '& .MuiOutlinedInput-root': {
-            '&::placeholder': {
-              color: 'white',
-              opacity: 1,
-            },
-            '& fieldset': {
-              borderColor: 'white',
-            },
-            '&:hover fieldset': {
-              borderColor: 'white',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: 'white',
-            },
-          },
-          '& .MuiInputLabel-root': {
-            color: 'white',
-          },
-        }}
-      />
-      <TextField
-        required
-        placeholder="نام"
-        variant="outlined"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        fullWidth
-        error={error.name}
-        helperText={error.name ? 'این فیلد ضروری است' : ''}
-        InputProps={{
-          style: { textAlign: 'right', color: 'white' },
-          dir: 'rtl',
-        }}
-        sx={{
-          '& .MuiOutlinedInput-root': {
-            '&::placeholder': {
-              color: 'white',
-              opacity: 1,
-            },
-            '& fieldset': {
-              borderColor: 'white',
-            },
-            '&:hover fieldset': {
-              borderColor: 'white',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: 'white',
-            },
-          },
-          '& .MuiInputLabel-root': {
-            color: 'white',
-          },
-        }}
-      />
-      <Autocomplete
-        multiple
-        options={categories}
-        getOptionLabel={(option) => option.title}
-        onChange={(event, newValue) => setSubmenu(newValue)}
-        PaperComponent={({ children }) => (
-          <Paper sx={{ bgcolor: '#fff', color: 'white' }}>{children}</Paper>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            placeholder="انتخاب دسته‌بندی‌ها"
-            InputProps={{
-              ...params.InputProps,
-              style: { textAlign: 'right', color: 'white' },
-              dir: 'rtl',
-            }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&::placeholder': {
+    <>
+      <Stack spacing={2}>
+        <TextField required onChange={(e) => setName(e.target.value)} placeholder='نام فارسی' />
+        <TextField required onChange={(e) => setEnglishName(e.target.value)} placeholder='نام انگلیسی' />
+        <Autocomplete
+          multiple
+          options={categories}
+          getOptionLabel={(option) => `${option.name} (${option.englishName})`}
+          onChange={(e, val) => setSubmenu(val)}
+          PaperComponent={({ children }) => (
+            <Paper sx={{ bgcolor: '#fff', color: '#fff' }}>{children}</Paper>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant='outlined'
+              placeholder='انتخاب زیر منو ها'
+              inputProps={{
+                ...params.inputProps,
+                style: { textAlign: 'right', color: '#fff' },
+                dir: 'rtl',
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&::placeholder': {
+                    color: 'white',
+                    opacity: 1,
+                  },
+                  '& fieldset': {
+                    borderColor: 'white',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'white',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'white',
+                  },
+                },
+                '& .MuiInputLabel-root': {
                   color: 'white',
-                  opacity: 1,
                 },
-                '& fieldset': {
-                  borderColor: 'white',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'white',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'white',
-                },
-              },
-              '& .MuiInputLabel-root': {
-                color: 'white',
-              },
-            }}
-          />
-        )}
-      />
-      <Button variant="contained" onClick={handleFetch}>ثبت</Button>
-    </Stack>
+              }}
+            />
+          )}
+        />
+        <Button variant='contained' onClick={handleAdd}>ثبت</Button>
+      </Stack>
+      <Toast type={toast.type} message={toast.message} />
+    </>
   );
 }

@@ -29,10 +29,10 @@ export const updateCategory = catchAsync(async (req,res,next)=>{
 });
 
 export const createCategory = catchAsync(async (req,res,next)=>{
-    const category = await Category.create(req.body);
+    const category = await Category.create(req.body,{new:true});
     return res.status(201).json({
         status: "success",
-        message: `Category Created Successfully`,
-        data: {category},
+        message: "Category Created Successfully",
+        data: { category },
     });
 });

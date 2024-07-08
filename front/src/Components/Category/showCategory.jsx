@@ -12,6 +12,7 @@ export default function ShowCategory() {
       const res = await fetch(process.env.REACT_APP_BASE_API+"/category");
       const data = await res.json();
       setCategory(data?.data?.categories);
+      console.log(data);
     })();
   },[]);
   const categories = category?.map(({englishName,name,submenu,slug})=>(

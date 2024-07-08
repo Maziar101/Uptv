@@ -6,6 +6,7 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         unique: [true, 'Category already exists'],
         required: [true, 'Category field can not be empty'],
+        trim:true
     },
     name: {
         type: String,
@@ -13,16 +14,15 @@ const CategorySchema = new mongoose.Schema({
         required: [true, 'Category field can not be empty'],
     },
     submenu: {
-        type: [mongoose.Types.ObjectId],
-        ref:'Category',
-        unique: true,
+        type: [Object],
+        unique: true
     },
     slug: {
         type: String,
         unique: true,
-        required: true,
+        trim:true
     },
-}, { timeStamps: true });
+}, { timestamps: true });
 
 CategorySchema.pre('save', function(next){
     if (this.slug) {
