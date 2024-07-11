@@ -11,6 +11,7 @@ export default function AddCategory() {
   const [toast, setToast] = useState({ type: "info", message: "nothing..." });
   const { token } = useSelector((state) => state.token);
   const [off, setOff] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -31,7 +32,7 @@ export default function AddCategory() {
   const handleAdd = async () => {
     if (name.trim() && englishName.trim()) {
       try {
-        console.log(typeof(englishName));
+        console.log(typeof (englishName));
         console.log(submenu)
         const res = await fetch(process.env.REACT_APP_BASE_API + "/category", {
           method: "POST",
@@ -92,6 +93,9 @@ export default function AddCategory() {
             "& .MuiInputLabel-root": {
               color: "white",
             },
+            input: {
+              color: "white",
+            }
           }}
           required
           onChange={(e) => setName(e.target.value)}
@@ -117,6 +121,9 @@ export default function AddCategory() {
             "& .MuiInputLabel-root": {
               color: "white",
             },
+            input: {
+              color: "white",
+            }
           }}
           required
           onChange={(e) => setEnglishName(e.target.value)}
@@ -127,9 +134,9 @@ export default function AddCategory() {
           options={categories}
           getOptionLabel={(option) => `${option?.name} (${option?.englishName})`}
           onChange={(e, val) => setSubmenu(val)}
-          isOptionEqualToValue={(option, value) => option._id === value._id} // این خط را اضافه کنید
+          isOptionEqualToValue={(option, value) => option._id === value._id}
           PaperComponent={({ children }) => (
-            <Paper sx={{ bgcolor: "#fff", color: "#fff" }}>{children}</Paper>
+            <Paper sx={{ bgcolor: "#000", mt: "10px", padding: "10px", color: "#fff", borderRadius: "8px", height: "300px", overflowY: "scroll", '::-webkit-scrollbar': { width: "7px" }, '::-webkit-scrollbar-track': { background: "#000" } , '::-webkit-scrollbar-thumb':{background:"#fff",borderRadius:"5px"} }}>{children}</Paper>
           )}
           renderInput={(params) => (
             <TextField
@@ -164,7 +171,12 @@ export default function AddCategory() {
             />
           )}
         />
-        <Button disabled={!englishName||!name} variant="contained" onClick={handleAdd}>
+        <Button sx={{
+          '&.Mui-disabled': {
+            color: '#ddd',
+            borderColor: '#F3738D',
+          }, background: '#F3738D', border: "1px solid #F3738D", color: "#000", fontWeight: "bold", '&:hover': { background: '#F3758D', color: "#000" }
+        }} disabled={!englishName || !name} variant="contained" onClick={handleAdd}>
           ثبت
         </Button>
       </Stack>
