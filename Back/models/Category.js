@@ -5,17 +5,20 @@ const CategorySchema = new mongoose.Schema({
     englishName: {
         type: String,
         unique: [true, 'Category already exists'],
-        required: [true, 'Category field can not be empty'],
+        require: [true,'englishName field is required'],
         trim:true
     },
     name: {
         type: String,
         unique: [true, 'Category already exists'],
-        required: [true, 'Category field can not be empty'],
+        require: [true,'name field is required'],
+        
     },
     submenu: {
-        type: [Object],
-        unique: true
+        type: [],
+        default: null,
+        unique: false,
+        index:false
     },
     slug: {
         type: String,
@@ -24,13 +27,18 @@ const CategorySchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-CategorySchema.pre('save', function(next){
-    if (this.slug) {
-        next();
-    } else {
-        this.slug = slugify(this.englishName, { 'lower': true });
-        next();
-    };
+CategorySchema.pre('save', function(next) {
+    if (this.englishName) {
+        this.slug = slugify(this.englishName, { lower: true });
+        if(this.submenu){
+            this.submenu.map((sub)=>{
+                sub.slug = this.slug + "/" + sub.englishName;
+            });
+        }else{
+            next();
+        }
+    }
+    next();
 });
 
 const Category = mongoose.model("Category", CategorySchema);
