@@ -28,11 +28,19 @@ export const updateCategory = catchAsync(async (req,res,next)=>{
     });
 });
 
-export const createCategory = catchAsync(async (req,res,next)=>{
-    const category = await Category.create(req.body);
-    return res.status(201).json({
-        status: "success",
-        message: `Category Created Successfully`,
-        data: {category},
-    });
+export const createCategory = catchAsync(async (req, res, next) => {
+    console.log(req.body); // اضافه کردن لاگ برای بررسی داده‌ها
+    try {
+        const category = await Category.create(req.body);
+        return res.status(201).json({
+            status: "success",
+            message: "Category Created Successfully",
+            data: { category },
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "fail",
+            message: err.message,
+        });
+    }
 });
