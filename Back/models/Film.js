@@ -30,7 +30,6 @@ const filmSchema = new mongoose.Schema({
     },
     categoriesId: {
         type: [String],
-        required: [true, 'Please Provide Category Name'],
     },
     ageLimit: {
         type: Number,
@@ -71,27 +70,23 @@ const filmSchema = new mongoose.Schema({
     year: {
         type: Number,
         required: true,
-        mex: 4,
     },
     like: {
-        type: String,
+        type: Number,
         required: true,
     },
     dislike: {
-        type: String,
+        type: Number,
         required: true,
     },
     slug: {
         type: String,
     },
-}, { timeStamps: true });
+}, { timestamps: true });
 
 filmSchema.pre('save', function (next) {
-    if (this.slug) {
-        next();
-    } else {
-        this.slug = slugify(this.englishName, { 'lower': true });
-    }
+    this.slug = slugify(this.englishName, { lower: true });
+    next();
 });
 
 const Film = mongoose.model('Film', filmSchema);

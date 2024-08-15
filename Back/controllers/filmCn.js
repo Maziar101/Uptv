@@ -41,19 +41,17 @@ export const updateFilm = catchAsync(async (req, res, next) => {
 });
 
 export const createFilm = catchAsync(async (req, res, next) => {
-    console.log(req.body)
     try {
-        const film = await Film.create(req.body);
-        console.log(film)
+        const category = await Film.create(req.body);
         return res.status(201).json({
             status: "success",
-            message: 'فیلم با موفقیت ساخته شد',
+            message: "Category Created Successfully",
+            data: { category },
         });
     } catch (err) {
         return res.status(400).json({
-            status: 'error',
+            status: "fail",
             message: err.message,
         });
     }
-
 });

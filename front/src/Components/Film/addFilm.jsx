@@ -5,7 +5,7 @@ import Toast from '../Toast';
 import { Formik, Form, Field } from 'formik';
 
 export default function AddFilm() {
-  const [toast, setToast] = useState({ type: 'info', message: 'nothing' });
+  const [toast, setToast] = useState(null); // Initialize as null
   const [categories, setCategories] = useState([]);
   const [files, setFiles] = useState({
     posterX: null,
@@ -76,11 +76,13 @@ export default function AddFilm() {
       ...prevFiles,
       [type]: file,
     }));
+    setToast({ type: 'info', message: `Uploading ${type}...` });
   };
 
   const onSubmit = async (values) => {
     console.log(files);
     let uploadedFiles = {};
+    let allFilesUploaded = true; // Flag to track if all files were uploaded successfully
   
     for (const key of Object.keys(files)) {
       if (files[key]) {
@@ -101,24 +103,24 @@ export default function AddFilm() {
           console.log(data);
           if (data.status === 'success') {
             uploadedFiles[key] = "public/films/" + data?.file[0]?.filename;
-            console.log(uploadedFiles);
+            setToast({ type: 'success', message: `${key} uploaded successfully!` });
           } else {
-            setToast({ type: 'error', message: 'Upload failed for ' + key });
-            return;
+            setToast({ type: 'error', message: `Upload failed for ${key}` });
+            allFilesUploaded = false;
           }
         } catch (err) {
           setToast({ type: 'error', message: err.message });
-          return;
+          allFilesUploaded = false;
         }
       } else {
-        setToast({ type: 'error', message: 'لطفا همه ی فایل ها را آپلود کنید!' });
-        return;
+        setToast({ type: 'error', message: `Please upload ${key}!` });
+        allFilesUploaded = false;
       }
     }
   
-    // Sending the film data along with the uploaded file paths to the server
-    try {
-      if (Object.keys(uploadedFiles).every((key) => uploadedFiles[key])) {
+    if (allFilesUploaded) {
+      // Sending the film data along with the uploaded file paths to the server
+      try {
         const res2 = await fetch(process.env.REACT_APP_BASE_API + '/films', {
           method: 'POST',
           headers: {
@@ -137,16 +139,14 @@ export default function AddFilm() {
         } else {
           setToast({ type: 'error', message: data2.message });
         }
-      } else {
-        setToast({ type: 'error', message: '! فایل ها به درستی آپلود نشده اند' });
+      } catch (err) {
+        setToast({ type: 'error', message: err.message });
       }
-    } catch (err) {
-      setToast({ type: 'error', message: err.message });
+    } else {
+      setToast({ type: 'error', message: '! فایل ها به درستی آپلود نشده اند' });
     }
   };
   
-
-
   return (
     <>
       <Stack sx={{ gap: '24px' }}>
@@ -165,7 +165,7 @@ export default function AddFilm() {
             time: null,
             about: '',
             filmStory: '',
-            year: '',
+            year: null,
             like: null,
             dislike: null
           }}
@@ -331,6 +331,7 @@ export default function AddFilm() {
                   as={FormInput}
                   name='year'
                   placeholder='سال ساخت'
+                  type='number'
                 />
                 <Field
                   as={FormInput}
