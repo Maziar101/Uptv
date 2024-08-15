@@ -29,7 +29,7 @@ export default function AdminPanel() {
   return (
     <ThemeProvider theme={theme}>
       <AdminHeader />
-      <Stack sx={{ display: 'flex', flexDirection: "row", width: "90%", boxShadow: "0 0 5px gray", margin: "30px auto", padding: "40px 0", background: "#23232B", height: "100vh", borderRadius: "10px", direction: "rtl" }}>
+      <Stack sx={{ display: 'flex', flexDirection: "row", width: "90%", boxShadow: "0 0 5px gray", margin: "30px auto", padding: "40px 0", background: "#23232B", minHeight: "100vh", borderRadius: "10px", direction: "rtl" }}>
         <Box sx={{ width: "30%", borderLeft: "2px solid gray", height: "96%", textAlign: "right" , padding:"20px"}} component={'nav'}>
           <List component="ul">
             <ListItemButton component={Link} to="/admin-panel">

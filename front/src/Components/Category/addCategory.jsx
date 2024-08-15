@@ -136,7 +136,7 @@ export default function AddCategory() {
           onChange={(e, val) => setSubmenu(val)}
           isOptionEqualToValue={(option, value) => option._id === value._id}
           PaperComponent={({ children }) => (
-            <Paper sx={{ bgcolor: "#000", mt: "10px", padding: "10px", color: "#fff", borderRadius: "8px", height: "300px", overflowY: "scroll", '::-webkit-scrollbar': { width: "7px" }, '::-webkit-scrollbar-track': { background: "#000" } , '::-webkit-scrollbar-thumb':{background:"#fff",borderRadius:"5px"}, '& .MuiAutocomplete-option': { color: '#fff' } }}>{children}</Paper>
+            <Paper sx={{ bgcolor: "#000", mt: "10px", padding: "10px", color: "#fff", borderRadius: "8px", height: "300px", overflowY: "scroll", '::-webkit-scrollbar': { width: "7px" }, '::-webkit-scrollbar-track': { background: "#000" }, '::-webkit-scrollbar-thumb': { background: "#fff", borderRadius: "5px" }, '& .MuiAutocomplete-option': { color: '#fff' } }}>{children}</Paper>
           )}
           renderInput={(params) => (
             <TextField
@@ -167,14 +167,14 @@ export default function AddCategory() {
                 "& .MuiInputLabel-root": {
                   color: "white",
                 },
-                "& .MuiAutocomplete-tag":{
+                "& .MuiAutocomplete-tag": {
                   color: "white",
-                  background:"#000"
+                  background: "#000"
                 },
-                '& .MuiChip-deleteIcon':{
+                '& .MuiChip-deleteIcon': {
                   color: "#fff"
                 },
-                '& .MuiChip-deleteIcon:hover':{
+                '& .MuiChip-deleteIcon:hover': {
                   color: "#fff"
                 }
               }}

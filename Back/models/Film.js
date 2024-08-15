@@ -10,7 +10,11 @@ const filmSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide an PosterY For Film'],
     },
-    filmPath: {
+    trailerPath: {
+        type: String,
+        required: [true, 'Please Provide Trailer'],
+    },
+    FilmPath:{
         type: String,
         required: [true, 'Please Provide Film'],
     },
@@ -24,12 +28,12 @@ const filmSchema = new mongoose.Schema({
         required: [true, 'Please Provide a Name'],
         unique: true,
     },
-    CategoriesId: {
+    categoriesId: {
         type: [String],
         required: [true, 'Please Provide Category Name'],
     },
     ageLimit: {
-        type: String,
+        type: Number,
         required: true,
     },
     rate: {
@@ -37,10 +41,10 @@ const filmSchema = new mongoose.Schema({
         required: true,
     },
     players: {
-        type: [String],
+        type: String,
         required: true,
     },
-    Director: {
+    director: {
         type: String,
         required: true,
     },
@@ -56,7 +60,7 @@ const filmSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    story: {
+    filmStory: {
         type: String,
         required: true,
     },
@@ -79,7 +83,6 @@ const filmSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true,
     },
 }, { timeStamps: true });
 

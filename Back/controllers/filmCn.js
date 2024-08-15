@@ -32,7 +32,7 @@ export const deleteFilm = catchAsync(async (req, res, next) => {
 });
 
 export const updateFilm = catchAsync(async (req, res, next) => {
-    const newFilm = Film.findByIdAndUpdate(req.params.id, {...req.body}, { new: true });
+    const newFilm = await Film.findByIdAndUpdate(req.params.id, { ...req.body }, { new: true });
     return res.status(200).json({
         status: "success",
         data: { newFilm },
@@ -40,10 +40,20 @@ export const updateFilm = catchAsync(async (req, res, next) => {
     });
 });
 
-export const createFilm = catchAsync(async(req,res,next)=>{
-    const film = await Film.create(req.body);
-    return res.status(201).json({
-        status:"success",
-        message:'فیلم با موفقیت ساخته شد',
-    });
+export const createFilm = catchAsync(async (req, res, next) => {
+    console.log(req.body)
+    try {
+        const film = await Film.create(req.body);
+        console.log(film)
+        return res.status(201).json({
+            status: "success",
+            message: 'فیلم با موفقیت ساخته شد',
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: 'error',
+            message: err.message,
+        });
+    }
+
 });
