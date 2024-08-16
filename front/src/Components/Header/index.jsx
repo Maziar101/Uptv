@@ -38,7 +38,10 @@ export default function Header() {
   // ));
   const handleOpenAccount = () => {
     setOpenAccountIcon(!openAccountIcon);
-    console.log(openAccountIcon);
+  };
+  const handleLogout = () => {
+    setOpenAccountIcon(!openAccountIcon);
+    Dispatch(logout)
   };
   return (
     <>
@@ -100,12 +103,12 @@ export default function Header() {
                   {token && user ? (
                     <>
                       <Typography>سلام {user?.name?.slice(0,8)} عزیز</Typography>
-                      <Typography  onClick={() => Dispatch(logout)} sx={{ color: '#F88E8A' , borderTop:"1px solid #fff" , pt:"16px" , cursor:"pointer"}}>
+                      <Typography  onClick={handleLogout} sx={{ color: '#F88E8A' , borderTop:"1px solid #fff" , pt:"16px" , cursor:"pointer"}}>
                         خروج از اکانت
                       </Typography>
                     </>
                   ) : (
-                    <Link to={"/login-register"} style={{
+                    <Link to={"/login-register"} onClick={handleOpenAccount} style={{
                       textAlign: "center",
                       color: "#fff"
                     }}
