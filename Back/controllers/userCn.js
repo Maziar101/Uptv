@@ -3,6 +3,7 @@ import Users from "../models/Users.js";
 import { mailerSend, emailParams } from "../middlewares/sendEmail.js";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
+import ApiFeatures from "../utils/apiFeatures.js";
 
 // export const createUser = catchAsync(async (req,res,next)=>{
 //     try{
@@ -31,6 +32,23 @@ import bcryptjs from "bcryptjs";
 //         });
 //     };
 // });
+
+export const getAllUsers = catchAsync(async (req,res,next)=>{
+    try{
+        const features = new ApiFeatures(Users,req.query).filters().limitFields().paginate().sort();
+        const users = await features.query;
+        return res.status(200).json({
+            status: 'failed',
+            message: 'Users Founded Successfully',
+            data: users,
+        });
+    }catch(err){
+        return res.status(400).json({
+            status: 'failed',
+            message: err.message,
+        });
+    }
+});
 
 export const deleteUser = catchAsync(async (req, res, next) => {
     const { id, role } = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_SECRET);
