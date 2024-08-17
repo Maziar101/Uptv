@@ -11,17 +11,10 @@ const userSchema = new mongoose.Schema({
         required: [true,'Please Provide username'],
         unique: [true,'username Already Exist'],
     },
-    email:{
-        type: String,
-        required: [true,'Please Provide Email'],
-        unique: [true,'Email Already Exist'],
-        match:[/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/gm,'email invalid'],
-        trim:true
-    },
     password:{
         type:String,
         required: [true,'Please Provide Password'],
-        match:[]
+        match:[/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,'password must be 8 characters or more']
     },
     role:{
         type:String,
