@@ -29,5 +29,11 @@ export const login = catchAsync(async (req,res,next)=>{
 });
 
 export const register = catchAsync(async (req,res,next)=>{
-    
+    const {password,...others} = req.body;
+    const hashPass = bcryptjs.hashSync(password);
+    await Users.create({...others,password:hashPass});
+    return res.status(201).json({
+        status:"success",
+        message:"Register Successfully",
+    });
 });
