@@ -46,3 +46,20 @@ export const deleteUser = catchAsync(async(req,res,next)=>{
         });
     }
 });
+
+export const getUser = catchAsync(async(req,res,next)=>{
+    try{
+        // decode id from token
+        const user = await Users.findById(req.id).select('-_v,-password');
+        return res.status(200).json({
+            status:"success",
+            message: "User Founded Successfully",
+            data: user
+        });
+    }catch(err){
+        return res.status(400).json({
+            status:"failed",
+            message: err.message,
+        });
+    };
+});
