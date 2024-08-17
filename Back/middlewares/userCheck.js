@@ -5,7 +5,7 @@ export const userCheck = (req,res,next)=>{
     if (req.params.id === id && role === 'user' || role === 'admin' || role === 'superAdmin'){
         next();
     }else{
-        return res.status(400).json({
+        return res.status(401).json({
             status:"failed",
             message:"You do not have permission to access this action",
         });

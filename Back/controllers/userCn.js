@@ -41,7 +41,7 @@ export const deleteUser = catchAsync(async (req, res, next) => {
             message: `User With Id ${req.params.id} Deleted Successfully`,
         });
     } else {
-        return res.status(400).json({
+        return res.status(401).json({
             status: "failed",
             message: "You do not have permission to access this action",
         });
@@ -51,18 +51,25 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 });
 
 export const getUser = catchAsync(async (req, res, next) => {
-    try {
-        // decode id from token
-        const user = await Users.findById(req.id).select('-_v,-password');
-        return res.status(200).json({
-            status: "success",
-            message: "User Founded Successfully",
-            data: user
-        });
-    } catch (err) {
-        return res.status(400).json({
+    const {id,role} = jwt.verify(req.headers.authorization.split(" ")[1],process.env.JWT_SECRET);
+    if (id === req.params.id || role === 'admin' || role === 'superAdmin'){
+        const user = await Users.findById(req.params.id).select('-__v,-password');
+        if (user){
+            return res.status(200).json({
+                status: "success",
+                message: `User With Id ${req.params.id} Founded Successfully !`,
+                data : user,
+            });
+        }else{
+            return res.status(404).json({
+                status: "failed",
+                message : `User With Id ${req.params.id} Not Found`,
+            });
+        }
+    }else{
+        return res.status(401).json({
             status: "failed",
-            message: err.message,
+            message: "You do not have permission to access this action",
         });
     };
 });
