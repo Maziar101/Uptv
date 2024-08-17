@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs";
 
 export const createUser = catchAsync(async (req,res,next)=>{
     try{
-        const {email,password,username,name,...others} = req.body;
+        const {email,id,password,username,name,role,...others} = req.body;
         const res = await mailerSend.send(emailParams);
         
         // Start Check Email Result
@@ -15,7 +15,7 @@ export const createUser = catchAsync(async (req,res,next)=>{
 
         const hashPass = bcryptjs.hashSync(password);
 
-        const token = jwt.sign({username,password:hashPass,name},process.env.JWT_SECRET);
+        const token = jwt.sign({username,id,role,password:hashPass},process.env.JWT_SECRET);
         
         const user = await Users.create({email,password,username,name,...others});
 
@@ -30,4 +30,19 @@ export const createUser = catchAsync(async (req,res,next)=>{
             message: err.message,
         });
     };
+});
+
+export const deleteUser = catchAsync(async(req,res,next)=>{
+    try{
+        await Users.findByIdAndDelete(req.params.id);
+        return res.status(200).json({
+            status: "success",
+            message: `User With Id ${req.params.id} Deleted Successfully`,
+        });
+    }catch(err){
+        return res.status(400).json({
+            status: "failed",
+            message: err.message,
+        });
+    }
 });
