@@ -25,6 +25,7 @@ export const login = catchAsync(async (req,res,next)=>{
         data: otherUser,
         token,
         name: user.name,
+        role: user.role,
     });
 });
 
