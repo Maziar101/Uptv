@@ -38,10 +38,7 @@ export default function Footer() {
         sx={{
           padding: "15px 15px 15px 0",
           width: "70%",
-          position: "fixed",
-          bottom: "0",
-          transform: "translateX(-50%)",
-          left: "50%",
+          margin: 'auto'
         }}
       >
         <Stack sx={{ gap: "20px" }}>

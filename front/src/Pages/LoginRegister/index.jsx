@@ -10,7 +10,7 @@ export default function LoginRegister() {
   return (
     <>
       {haveAcc ? (
-        <Login handleAcc={handleAcc} />
+        <Login handleAcc={} />
       ) : (
         <Register handleAcc={handleAcc} />
       )}
