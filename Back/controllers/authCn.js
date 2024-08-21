@@ -1,6 +1,6 @@
-import Users from "../models/Users";
-import catchAsync from "../utils/catchAsync";
-import HandleError from "../utils/handleError";
+import Users from "../models/Users.js";
+import catchAsync from "../utils/catchAsync.js";
+import HandleError from "../utils/handleError.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -19,13 +19,13 @@ export const login = catchAsync(async (req,res,next)=>{
     };
     const token = jwt.sign({id: user._id,role:user.role},process.env.JWT_SECRET);
     const {password:hashPass,...otherUser} = user;
+    console.log(user);
     return res.status(200).json({
         status:"success",
         message:"Login Successfully",
-        data: otherUser,
-        token,
         name: user.name,
         role: user.role,
+        token,
     });
 });
 

@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Contents from './Pages/Videos';
 import UpdateCategory from './Components/Category/updateCategory';
 import Header from './Components/Header';
@@ -19,13 +19,15 @@ import AddCategory from './Components/Category/addCategory';
 import AddFilm from './Components/Film/addFilm';
 import AddSeries from './Components/Series/addSeries';
 import LoginRegister from './Pages/LoginRegister';
+import { useCookies } from 'react-cookie';
 
 export default function App() {
+  const [cookies,setCookies] = useCookies(['role','name','token']);
   const theme = createTheme({
     direction: 'rtl',
   });
   const location = useLocation();
-  const isAdminPanel = location.pathname.startsWith('/admin-panel');
+  const isAdminPanel = cookies.role==='admin' || cookies.role === 'superAdmin' ? location.pathname.startsWith('/admin-panel'):null;
 
   return (
     <>
@@ -34,9 +36,9 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/contents/:id/:name' element={<Contents />} />
-          <Route path='/login-register' element={<LoginRegister />} />
+          <Route path='/login-register' element={cookies.token ? <Home /> : <LoginRegister />} />
           <Route path='/admin-panel' element={<AdminPanel />}>
-            <Route index element={<AdminHome />} />
+            <Route index element={cookies.role==='admin' || cookies.role === 'superAdmin' ? <AdminHome /> : <Navigate to={'/'} />} />
             <Route path="/admin-panel/category/show" element={<ShowCategory />} />
             <Route path='/admin-panel/category/add' element={<AddCategory />}/>
             <Route path="/admin-panel/category/update" element={<UpdateCategory />} />
