@@ -36,9 +36,9 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/contents/:id/:name' element={<Contents />} />
-          <Route path='/login-register' element={cookies.token ? <Home /> : <LoginRegister />} />
+          <Route path='/login-register' element={cookies.token ? <Navigate to='/'/> : <LoginRegister />} />
           <Route path='/admin-panel' element={<AdminPanel />}>
-            <Route index element={cookies.role==='admin' || cookies.role === 'superAdmin' ? <AdminHome /> : <Navigate to={'/'} />} />
+            <Route index element={cookies.token?cookies.role==='admin' || cookies.role === 'superAdmin' ? <AdminHome /> : <Navigate to={'/'} />:<Navigate to={'/login-register'}/>} />
             <Route path="/admin-panel/category/show" element={<ShowCategory />} />
             <Route path='/admin-panel/category/add' element={<AddCategory />}/>
             <Route path="/admin-panel/category/update" element={<UpdateCategory />} />
