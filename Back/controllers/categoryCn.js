@@ -34,6 +34,7 @@ export const updateCategory = catchAsync(async (req, res, next) => {
         }
         return sub;
     });
+    await Category.findByIdAndUpdate(req.params.subid,{name:req.body.name},{new:true});
 
     await Category.findByIdAndUpdate(req.params.catid, { submenu: subs }, { new: true });
 

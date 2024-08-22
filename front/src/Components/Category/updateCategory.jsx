@@ -4,11 +4,12 @@ import { ExpandMore as ExpandMoreIcon, Save as SaveIcon } from '@mui/icons-mater
 import Loader from '../Loader';
 import { useSelector } from 'react-redux';
 import Toast from '../Toast';
+import { useCookies } from 'react-cookie';
 
 export default function UpdateCategory() {
   const [categories, setCategories] = useState([]);
   const [toast, setToast] = useState({ type: 'info', message: 'something' });
-  const { token } = useSelector((state) => state.token);
+  const [{token},setCookies] = useCookies(['token']);
 
   useEffect(() => {
     (async () => {
@@ -59,27 +60,39 @@ export default function UpdateCategory() {
   return (
     <>
       {categories.length > 0 ? categories.filter(cat => cat.submenu && cat.submenu.length > 0).map(({ name, submenu, slug, _id }) => (
-        <Accordion key={slug} sx={{ bgcolor: '#000', color: '#fff' }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#fff', fontSize: "35px" }} />}>
-            <Typography>{name}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {submenu.map((sub) => sub && (
-              <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
-                <TextField
-                  value={sub.name}
-                  onChange={(event) => handleInputChange(_id, sub._id, event)}
-                  variant="outlined"
-                  size="small"
-                  sx={{ bgcolor: '#fff', borderRadius: '4px' }}
-                />
-                <IconButton onClick={() => handleUpdate(_id, sub)} sx={{ color: '#fff' }}>
-                  <SaveIcon />
-                </IconButton>
-              </Stack>
-            ))}
-          </AccordionDetails>
-        </Accordion>
+        <Accordion key={slug} sx={{ bgcolor: '#f9dcac', color: '#000' }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon sx={{ color: '#000', fontSize: "35px" }} />}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            '& .MuiAccordionSummary-content': {
+              alignItems: "center",
+              justifyContent: "space-between"
+            }
+          }}
+        >
+          <Typography>{name}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {submenu.map((sub) => sub && (
+            <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
+              <TextField
+                value={sub.name}
+                onChange={(event) => handleInputChange(_id, sub._id, event)}
+                variant="outlined"
+                size="small"
+                sx={{ bgcolor: '#fff', borderRadius: '4px' }}
+              />
+              <IconButton onClick={() => handleUpdate(_id, sub)} sx={{ color: '#000' }}>
+                <SaveIcon />
+              </IconButton>
+            </Stack>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+      
       )) : <Loader />}
       <Toast type={toast.type} message={toast.message} />
     </>
