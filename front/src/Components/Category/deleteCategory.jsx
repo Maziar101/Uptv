@@ -87,7 +87,7 @@ export default function DeleteCategory() {
   </AccordionSummary>
   <AccordionDetails>
     {submenu.map((sub) => sub && (
-      <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #000', py: 1 }}>
         <Typography>{sub.name}</Typography>
         <IconButton onClick={() => handleDeleteSub(_id, sub._id)} sx={{ color: '#000' }}>
           <DeleteIcon />

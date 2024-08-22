@@ -17,18 +17,26 @@ export default function ShowCategory() {
   }, []);
 
   const categories = category?.filter(cat => cat.submenu && cat.submenu.length > 0).map(({ englishName, name, submenu, slug, _id }) => (
-    <Accordion key={slug} sx={{ bgcolor: '#000', color: '#fff' }}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#fff' }} />}>
-        <Typography>{name}</Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        {submenu.map((sub) => sub && (
-          <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
-            <Typography>{sub.name}</Typography>
-          </Stack>
-        ))}
-      </AccordionDetails>
-    </Accordion>
+    <Accordion key={slug} sx={{ bgcolor: '#f9dcac', color: '#000' }}>
+  <AccordionSummary
+    expandIcon={<ExpandMoreIcon sx={{ color: '#000' }} />} // تغییر رنگ آیکن به مشکی
+    sx={{
+      '& .MuiSvgIcon-root': { // این خط برای تغییر رنگ آیکن‌ها به مشکی
+        color: '#000',
+      }
+    }}
+  >
+    <Typography>{name}</Typography>
+  </AccordionSummary>
+  <AccordionDetails>
+    {submenu.map((sub) => sub && (
+      <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #000', py: 1 }}>
+        <Typography>{sub.name}</Typography>
+      </Stack>
+    ))}
+  </AccordionDetails>
+</Accordion>
+
   ));
 
   return (
