@@ -4,11 +4,12 @@ import { ExpandMore as ExpandMoreIcon, Delete as DeleteIcon } from '@mui/icons-m
 import Loader from '../Loader';
 import { useSelector } from 'react-redux';
 import Toast from '../Toast';
+import { useCookies } from 'react-cookie';
 
 export default function DeleteCategory() {
   const [category, setCategory] = useState();
   const [toast, setToast] = useState({ type: 'info', message: 'test message' });
-  const { token } = useSelector((state) => state.token);
+  const [{token},setCookies] = useCookies(['token']);
 
   useEffect(() => {
     (async () => {
@@ -63,24 +64,39 @@ export default function DeleteCategory() {
   };
 
   const categories = category?.filter(cat => cat.submenu && cat.submenu.length > 0).map(({ englishName, name, submenu, slug, _id }) => (
-    <Accordion key={slug} sx={{ bgcolor: '#000', color: '#fff' }}>
-      <AccordionSummary sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" , '& .css-eqpfi5-MuiAccordionSummary-content':{alignItems:"center",justifyContent:"space-between"}}} expandIcon={<ExpandMoreIcon sx={{ color: '#fff', fontSize: "35px" }} />}>
-        <Typography>{name}</Typography>
-        <IconButton onClick={() => handleDeleteCat(_id)} sx={{ color: '#fff' }}>
+    <Accordion key={slug} sx={{ bgcolor: '#f9dcac', color: '#000' }}>
+  <AccordionSummary
+    sx={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      '& .css-eqpfi5-MuiAccordionSummary-content': {
+        alignItems: "center",
+        justifyContent: "space-between"
+      },
+      '& .MuiSvgIcon-root': { // این خط برای تغییر رنگ آیکن
+        color: '#000',
+      }
+    }}
+    expandIcon={<ExpandMoreIcon sx={{ color: '#000', fontSize: "35px" }} />} // تغییر رنگ آیکن اینجا
+  >
+    <Typography>{name}</Typography>
+    <IconButton onClick={() => handleDeleteCat(_id)} sx={{ color: '#000' }}>
+      <DeleteIcon />
+    </IconButton>
+  </AccordionSummary>
+  <AccordionDetails>
+    {submenu.map((sub) => sub && (
+      <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
+        <Typography>{sub.name}</Typography>
+        <IconButton onClick={() => handleDeleteSub(_id, sub._id)} sx={{ color: '#000' }}>
           <DeleteIcon />
         </IconButton>
-      </AccordionSummary>
-      <AccordionDetails>
-        {submenu.map((sub) => sub && (
-          <Stack direction="row" alignItems="center" justifyContent="space-between" key={sub.slug} sx={{ borderBottom: '1px solid #fff', py: 1 }}>
-            <Typography>{sub.name}</Typography>
-            <IconButton onClick={() => handleDeleteSub(_id, sub._id)} sx={{ color: '#fff' }}>
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-        ))}
-      </AccordionDetails>
-    </Accordion>
+      </Stack>
+    ))}
+  </AccordionDetails>
+</Accordion>
+
   ));
 
   return (
