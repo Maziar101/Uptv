@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Toast from "../Toast";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import { useCookies } from "react-cookie";
 
 export default function DeleteFilm() {
   const [films, setFilms] = useState([]);
   const [toast, setToast] = useState({ type: "info", message: "" });
-  const { token } = useSelector((state) => state.token);
+  const [{ token },setCookies] = useCookies(['token']);
 
   useEffect(() => {
     (async () => {
