@@ -4,15 +4,14 @@ import { List, ListItemButton, ListItemText, Collapse, Box, Stack, createTheme, 
 import AdminHeader from '../../Components/AdminHeader';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/Slices/TokenSlice';
+import { useCookies } from 'react-cookie';
 
 export default function AdminPanel() {
   const [openCategory, setOpenCategory] = useState(false);
   const [openFilm, setOpenFilm] = useState(false);
   const [openSeries, setOpenSeries] = useState(false);
-  const Dispatch = useDispatch();
-
+  const [cookies, setCookies , removeCookie] = useCookies(['name', 'role', 'token']);
+  
   const handleMenuClick = (menu) => {
     setOpenCategory(menu === 'category' ? !openCategory : false);
     setOpenFilm(menu === 'film' ? !openFilm : false);
@@ -25,6 +24,12 @@ export default function AdminPanel() {
       fontFamily: "Iran",
     },
   });
+
+  const handleLogout = ()=>{
+    ['role','token','name'].forEach((key)=>window.localStorage.removeItem(key));
+    ['token','role','name'].forEach((key)=>removeCookie(key));
+    window.location.reload();
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -98,7 +103,7 @@ export default function AdminPanel() {
               </List>
             </Collapse>
             <ListItemButton component={Link}>
-              <ListItemText primary="خروج از اکانت" onClick={()=>Dispatch(logout)} sx={{ textAlign: 'right', color: '#F88E8A' }} />
+              <ListItemText primary="خروج از اکانت" onClick={handleLogout} sx={{ textAlign: 'right', color: '#F88E8A' }} />
             </ListItemButton>
           </List>
         </Box>

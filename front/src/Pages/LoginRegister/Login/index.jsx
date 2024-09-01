@@ -31,7 +31,10 @@ export default function Login({ handleAcc }) {
         setToast({type:'success',message:'خوش آمدید'});
         setCookies('token', data?.token, { path: '/' });
         setCookies('role', data?.role, { path: '/' });
-        setCookies('user', data?.name, { path: '/' });
+        setCookies('name', data?.name, { path: '/' });
+        window.localStorage.setItem('token',data?.token);
+        window.localStorage.setItem('role',data?.role);
+        window.localStorage.setItem('name',data?.name);
         dispatch(login({token:data?.token,role:data?.role,name:data?.name}));
         console.log(data)
       }else{

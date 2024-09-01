@@ -28,6 +28,11 @@ export default function App() {
   });
   const location = useLocation();
 
+  console.log(window.localStorage.getItem('role'))
+  console.log(['admin','superAdmin'].forEach((role)=>console.log(role))?"hello":"false")
+  const isAdminPanel = ['admin','superAdmin'].forEach((role)=>window.localStorage.getItem('role')===role) ? location.pathname.startsWith('/admin-panel'):null;
+
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -35,9 +40,10 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/contents/:id/:name' element={<Contents />} />
-          <Route path='/login-register' element={cookies.token || window.localStorage.getItem('token') ? <Navigate to='/' /> : <LoginRegister />} />
-          <Route path='/admin-panel' element={cookies.token || window.localStorage.getItem('token') ? cookies.role === 'admin' || cookies.role === 'superAdmin' || ['admin', 'superAdmin'].includes(window.localStorage.getItem('role')) ? <AdminPanel /> : <Navigate to={'/'} /> : <Navigate to={'/login-register'} />}>
-            <Route index element={<AdminHome />} />
+          <Route path='/login-register' element={cookies.token ? <Navigate to='/'/> : <LoginRegister />} />
+          <Route path='/admin-panel' element={window.localStorage.getItem('token')?['admin','superAdmin'].forEach((role)=>window.localStorage.getItem('role')===role) ? <AdminPanel /> : <Navigate to={'/'} />:<Navigate to={'/login-register'}/>}>
+            <Route index element={<AdminHome/>} />
+
             <Route path="/admin-panel/category/show" element={<ShowCategory />} />
             <Route path='/admin-panel/category/add' element={<AddCategory />} />
             <Route path="/admin-panel/category/update" element={<UpdateCategory />} />

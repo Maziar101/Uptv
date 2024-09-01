@@ -12,7 +12,7 @@ const filmSchema = new mongoose.Schema({
     },
     backPoster:{
         type: String,
-        required: [true, 'Please Provide an backPoster For Film'],
+        required: [true, 'Please Provide an backPoster For Film']
     },
     trailerPath: {
         type: String,
@@ -33,7 +33,7 @@ const filmSchema = new mongoose.Schema({
         unique: true,
     },
     categoriesId: {
-        type: [String],
+        type: [Object],
     },
     ageLimit: {
         type: Number,

@@ -11,8 +11,9 @@ export default function ShowFilm() {
       try {
         const res = await fetch(process.env.REACT_APP_BASE_API + "/films");
         const data = await res.json();
+        console.log(data?.data?.Films)
         if (data?.status === "success") {
-          setFilms(data?.data);
+          setFilms(data?.data?.Films);
         } else {
           setToast({ type: "error", message: data?.message });
         }
@@ -61,7 +62,7 @@ export default function ShowFilm() {
                     مدت زمان: {film.time} دقیقه
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {film.filmStory}
+                    {film.filmStory.slice(0,80)} ...
                   </Typography>
                   <Button size="small" href={film.imdbLink} target="_blank" rel="noopener">
                     لینک IMDB

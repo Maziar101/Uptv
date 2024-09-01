@@ -1,4 +1,5 @@
 import Film from "../models/Film.js";
+import fs from "fs";
 import ApiFeatures from "../utils/apiFeatures.js";
 import catchAsync from "../utils/catchAsync.js";
 import HandleError from "../utils/handleError.js";
@@ -25,36 +26,34 @@ export const getFilm = catchAsync(async (req, res, next) => {
 });
 
 export const deleteFilm = catchAsync(async (req, res, next) => {
-
+    // استفاده از await برای اطمینان از یافتن فیلم
     const film = await Film.findById(req.params.id);
-
-    if(!film){
+    if (!film){
         return res.status(404).json({
-            status: "failed",
-            message: `فیلم با آیدی ${req.params.id} با موفقیت پاک شد .`,
+            status:'failed',
+            message: `فیلم با آیدی ${req.params.id} پیدا نشد!`,
         });
     };
-    // console.log(`/public/films/${film.englishName.split(" ").join("-")}`)
-    // if (fs.existsSync(`/public/films/${film.englishName.split(" ").join("-")}`)){
-    //     console.log('s')
-    //     await fs.rm(`/films/${film.englishName.split(" ").join("-")}`);
-    // }
-
-    
-
-    if (fs.existsSync('/public/films')){
-        console.log("first");
-    }else if (fs.existsSync('/films')){
-        console.log("second");
-    }
-
+    console.log("first")
+    const filmFolderPath = `public/films/${film?.englishName?.split(" ")?.join('-')}`;
+    console.log(filmFolderPath)
+    try{
+        await fs.promises.rm(filmFolderPath, { recursive: true, force: true });
+    }catch(err){
+        return res.status(400).json({
+            status: 'failed',
+            message: `خطا در حذف پوشه فیلم: ${err.message}`,
+        });
+    };
 
     await Film.findByIdAndDelete(req.params.id);
+
     return res.status(200).json({
         status: "success",
-        message: `فیلم با آیدی ${req.params.id} با موفقیت پاک شد .`,
+        message: `فیلم با آیدی ${req.params.id} با موفقیت پاک شد.`,
     });
 });
+
 
 export const updateFilm = catchAsync(async (req, res, next) => {
     const newFilm = await Film.findByIdAndUpdate(req.params.id, { ...req.body }, { new: true });
