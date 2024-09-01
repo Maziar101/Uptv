@@ -2,6 +2,7 @@ import Film from "../models/Film.js";
 import ApiFeatures from "../utils/apiFeatures.js";
 import catchAsync from "../utils/catchAsync.js";
 import HandleError from "../utils/handleError.js";
+import fs from "fs";
 
 export const getAllFilm = catchAsync(async (req, res, next) => {
     const features = new ApiFeatures(Film, req.query).filters().limitFields().paginate().sort();
@@ -24,6 +25,30 @@ export const getFilm = catchAsync(async (req, res, next) => {
 });
 
 export const deleteFilm = catchAsync(async (req, res, next) => {
+
+    const film = await Film.findById(req.params.id);
+
+    if(!film){
+        return res.status(404).json({
+            status: "failed",
+            message: `فیلم با آیدی ${req.params.id} با موفقیت پاک شد .`,
+        });
+    };
+    // console.log(`/public/films/${film.englishName.split(" ").join("-")}`)
+    // if (fs.existsSync(`/public/films/${film.englishName.split(" ").join("-")}`)){
+    //     console.log('s')
+    //     await fs.rm(`/films/${film.englishName.split(" ").join("-")}`);
+    // }
+
+    
+
+    if (fs.existsSync('/public/films')){
+        console.log("first");
+    }else if (fs.existsSync('/films')){
+        console.log("second");
+    }
+
+
     await Film.findByIdAndDelete(req.params.id);
     return res.status(200).json({
         status: "success",

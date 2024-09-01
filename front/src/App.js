@@ -22,12 +22,11 @@ import LoginRegister from './Pages/LoginRegister';
 import { useCookies } from 'react-cookie';
 
 export default function App() {
-  const [cookies,setCookies] = useCookies(['role','name','token']);
+  const [cookies, setCookies] = useCookies(['role', 'name', 'token']);
   const theme = createTheme({
     direction: 'rtl',
   });
   const location = useLocation();
-  const isAdminPanel = cookies.role==='admin' || cookies.role === 'superAdmin' ? location.pathname.startsWith('/admin-panel'):null;
 
   return (
     <>
@@ -36,11 +35,11 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='/contents/:id/:name' element={<Contents />} />
-          <Route path='/login-register' element={cookies.token ? <Navigate to='/'/> : <LoginRegister />} />
-          <Route path='/admin-panel' element={<AdminPanel />}>
-            <Route index element={cookies.token?cookies.role==='admin' || cookies.role === 'superAdmin' ? <AdminHome /> : <Navigate to={'/'} />:<Navigate to={'/login-register'}/>} />
+          <Route path='/login-register' element={cookies.token || window.localStorage.getItem('token') ? <Navigate to='/' /> : <LoginRegister />} />
+          <Route path='/admin-panel' element={cookies.token || window.localStorage.getItem('token') ? cookies.role === 'admin' || cookies.role === 'superAdmin' || ['admin', 'superAdmin'].includes(window.localStorage.getItem('role')) ? <AdminPanel /> : <Navigate to={'/'} /> : <Navigate to={'/login-register'} />}>
+            <Route index element={<AdminHome />} />
             <Route path="/admin-panel/category/show" element={<ShowCategory />} />
-            <Route path='/admin-panel/category/add' element={<AddCategory />}/>
+            <Route path='/admin-panel/category/add' element={<AddCategory />} />
             <Route path="/admin-panel/category/update" element={<UpdateCategory />} />
             <Route path="/admin-panel/category/delete" element={<DeleteCategory />} />
             <Route path="/admin-panel/film/show" element={<ShowFilm />} />

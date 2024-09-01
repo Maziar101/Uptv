@@ -10,6 +10,10 @@ const filmSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please Provide an PosterY For Film'],
     },
+    backPoster:{
+        type: String,
+        required: [true, 'Please Provide an backPoster For Film'],
+    },
     trailerPath: {
         type: String,
         required: [true, 'Please Provide Trailer'],
